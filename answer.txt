@@ -1,0 +1,45 @@
+CREATE TABLE habitats (
+    habitat_id SERIAL PRIMARY KEY,
+    habitat_name VARCHAR(50),
+    climate VARCHAR(50)
+);
+
+CREATE TABLE animals (
+    animal_id SERIAL PRIMARY KEY,
+    animal_name VARCHAR(50),
+    species VARCHAR(50),
+    habitat_id INT REFERENCES habitats(habitat_id)
+);
+
+SELECT column_name, data_type, is_nullable
+FROM information_schema.columns
+WHERE table_name = 'habitats';
+
+SELECT column_name, data_type, is_nullable
+FROM information_schema.columns
+WHERE table_name = 'animals';
+
+INSERT INTO habitats (habitat_name, climate) VALUES
+('Forest', 'Temperate'),
+('Desert', 'Arid'),
+('Ocean', 'Marine'),
+('Grassland', 'Temperate'),
+('Tundra', 'Arctic');
+
+INSERT INTO animals (animal_name, species, habitat_id) VALUES
+('Lion', 'Panthera leo', 4),
+('Penguin', 'Spheniscidae', 3),
+('Elephant', 'Loxodonta africana', 1),
+('Cactus Mouse', 'Peromyscus eremicus', 2),
+('Polar Bear', 'Ursus maritimus', 5),
+('Giraffe', 'Giraffa camelopardalis', 4),
+('Kangaroo', 'Macropus', 4),
+('Dolphin', 'Delphinidae', 3);
+
+select ha.habitat_id, ha.habitat_name, count(an.animal_id)
+from habitats ha
+join animals an on ha.habitat_id = an.habitat_id
+group by ha.habitat_id
+order by ha.habitat_id;
+
+
